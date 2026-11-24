@@ -1,0 +1,18 @@
+[model]
+type = "dit"            # denoiseネットワークの種類: "transformer" / "unet" / "dit"
+image_channels = 1
+image_height = 32
+image_width = 32
+
+[diffusion]
+num_timesteps = 100     # 拡散過程のタイムステップ数T
+
+[train]
+lr = 1e-5
+epoch = 60
+steps_per_epoch = 100   # 1epochあたりBuildSwissRollで生成するバッチ数
+batch = 8
+
+[wandb]
+project = "td-plan-ddpm-scratch"
+group = "dit_32*32_p2_c32_dit4"   # 既存checkpoint名 model_{group}.pt と一致させるため変えない

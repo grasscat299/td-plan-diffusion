@@ -1,0 +1,15 @@
+[model]
+image_channels = 1
+latent_height = 16      # 入力画像は (4*latent_height, 4*latent_width) = 64x64
+latent_width = 16
+
+[train]
+lr = 1e-4
+epoch = 120
+steps_per_epoch = 100   # 1epochあたりBuildSwissRollで生成するバッチ数
+batch = 8
+kl_weight = 1e-3
+
+[wandb]
+project = "td-plan-vae-scratch"
+group = "vae_128"

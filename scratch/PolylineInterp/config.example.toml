@@ -1,0 +1,27 @@
+[data]
+n_checkpoints = 3       # N。現状は三角形(N=3)のみ対応
+closed = true           # checkpoint2からcheckpoint0へ戻る閉じた経路にするか
+coord_min = -1.0
+coord_max = 1.0
+step = 0.1              # 等間隔サンプリングの間隔（座標と同スケール）
+min_triangle_area = 0.05  # これ未満の面積の三角形（ほぼ一直線）は再サンプリングする
+num_train_samples = 2000
+num_val_samples = 200
+seed = 0
+
+[model]
+d_model = 64
+n_heads = 4
+n_encoder_layers = 3
+n_decoder_layers = 3
+dim_feedforward = 128
+head_type = "interp"    # "linear"（座標を直接回帰） or "interp"（checkpoint座標への補間、頂点が丸まりにくい）
+
+[train]
+lr = 1e-3
+epoch = 200
+batch = 64
+
+[wandb]
+project = "td-plan-polyline-interp"
+group = "triangle_n3"

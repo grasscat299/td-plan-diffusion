@@ -1,0 +1,21 @@
+[vae]
+load_path = "scratch/VAE/checkpoints/model_vae_128.pt"
+image_channels = 1
+latent_height = 16      # model_vae_128.ptを学習した時点の値と一致させる
+latent_width = 16
+
+[model]
+type = "dit"
+
+[diffusion]
+num_timesteps = 100
+
+[train]
+lr = 1e-3
+epoch = 60
+steps_per_epoch = 100
+batch = 16
+
+[wandb]
+project = "td-plan-latent-ddpm-scratch"
+group = "latent_dit_vae128_c128"

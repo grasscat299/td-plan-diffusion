@@ -1,0 +1,42 @@
+[experiment]
+# どの実験をtrain/inferするか: "latent_dit" (VAE latent空間でDiTを学習/生成) |
+# "pixel_transformer" (VAEを経由せず28x28 pixel空間で直接transformerを学習/生成) |
+# "vae" (kind="latent_dit"が使う凍結VAE自体の学習)
+kind = "latent_dit"
+
+[vae]
+# kind="vae"では学習対象のVAEの構造。kind="latent_dit"では凍結VAEの構造とload_pathからの読み込み
+image_channels = 1
+latent_height = 8       # 入力画像は (4*latent_height, 4*latent_width) = 32x32
+latent_width = 8
+kl_weight = 1e-3        # kind="vae"の学習でのみ使う
+load_path = "scratch/MNIST/checkpoints/model_vae_mnist.pt"  # kind="latent_dit"が読み込む凍結VAEのcheckpoint
+
+[latent_dit]
+dit_variant = "local_dit"  # "local_dit" (model_dit.pyのDiTModel、数字ラベルをnn.Embeddingで条件付け) | "model_dit" (scratch.DDPM.model.build_model("dit",...)、angleスロットにsinusoidal embeddingでラベルを転用)
+loss_type = "mse"          # "mse" | "l1"
+
+[pixel_transformer]
+model_type = "transformer"
+image_channels = 1
+image_height = 28
+image_width = 28
+
+[diffusion]
+num_timesteps = 100
+
+[train]
+# 既定値はkind="latent_dit"のもの。kindを変えたら元の値に合わせて書き換える:
+#   pixel_transformer: lr=1e-5, epoch=120, steps_per_epoch=100, batch=16
+#   vae:                lr=1e-4, epoch=60,  steps_per_epoch=100, batch=32
+lr = 1e-3
+epoch = 60
+steps_per_epoch = 100
+batch = 16
+
+[wandb]
+project = "td-plan-mnist-scratch"
+# groupはkindごとに分ける運用。kindを変えたらgroupも変えること（checkpointファイル名 model_{group}.pt もこれで変わる）
+#   pixel_transformer: "mnist_pixel_transformer_28x28"
+#   vae:                "vae_mnist"
+group = "mnist_latent_dit_lr3_c64_b8"

@@ -1,0 +1,34 @@
+# 4.1 の B25 の設定
+
+[shape]
+T                = 300   # 秒
+n_en             = 84
+n_op             = 24
+en_dim           = 4     # 存在・x・y・HP
+c_op             = 131   # 7 + 升 117 + スキル 7
+n_rows           = 9
+n_cols           = 13
+n_tile_types     = 4
+max_route_points = 64
+route_dim        = 3     # x・y・待機時間
+enemy_attr_dim   = 23
+ope_attr_dim     = 66
+tile_feat_dim    = 13
+cov_channel      = 4
+
+[model]
+d                = 128
+num_layers       = 6
+num_heads        = 4
+ffn_mult         = 4
+cond_mlp_mult    = 4
+route_num_layers = 2
+route_num_heads  = 4
+t_c              = 16
+op_dropout       = 0.1
+
+[diffusion]
+num_timesteps     = 100
+beta_start        = 0.0001
+beta_end          = 0.02
+zero_terminal_snr = true
